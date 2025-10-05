@@ -29,9 +29,7 @@
             min-height: 100vh;
         }
 
-        .h123{
-            height: 150px;
-        }
+/* Removed unused .h123 rule */
 
 .reward-button {
     background: #c7ffb7;
@@ -45,35 +43,7 @@
     animation: danceZoom 3.5s infinite ease-in-out;
     transform-origin: center;
 }
-@media screen and (min-width: 768px) {
-            .chat-carousel-container {
-            overflow-x: scroll;
-            scroll-snap-type: x mandatory;
-            -webkit-overflow-scrolling: touch;
-            padding-bottom: 1rem; /* Space for shadow */
-        }
 
-        .chat-slide {
-            flex: 0 0 100%; /* Make each slide take up the full width of the container viewport */
-            scroll-snap-align: start; /* Snap precisely to the start of the slide */
-            width: 100%;
-            aspect-ratio: 4/9; /* Sets height relative to width for responsive image container */
-            background-color: var(--bg-dark); 
-            border: 1px solid var(--block-bg);
-            box-shadow: 0 0 25px rgba(31, 33, 37, 0.9);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .chat-slide img {
-            width: 100%;
-            height: 100%;
-            /* FIX: Use cover to make the image fill the entire box */
-            object-fit: cover; 
-            border-radius: 0.75rem; /* Match the rounded-2xl on the slide container */
-        }
-}
 /* Smooth, gentle dance (zoom + rotate + hop) */
 @keyframes danceZoom {
     0%, 70%, 100% {
@@ -120,6 +90,8 @@
         /* Carousel/Chat Styling */
         .chat-carousel-container {
             overflow-x: scroll;
+            /* Added smooth scroll behavior for dot clicks */
+            scroll-behavior: smooth; 
             scroll-snap-type: x mandatory;
             -webkit-overflow-scrolling: touch;
             padding-bottom: 1rem; /* Space for shadow */
@@ -129,7 +101,8 @@
             flex: 0 0 100%; /* Make each slide take up the full width of the container viewport */
             scroll-snap-align: start; /* Snap precisely to the start of the slide */
             width: 100%;
-            aspect-ratio: 4/5; /* Sets height relative to width for responsive image container */
+            /* Kept aspect ratio for responsive height */
+            aspect-ratio: 4/9; 
             background-color: var(--bg-dark); 
             border: 1px solid var(--block-bg);
             box-shadow: 0 0 25px rgba(31, 33, 37, 0.9);
@@ -139,15 +112,15 @@
         }
 
         .chat-slide img {
-            width: 58%;
+            width: 100%;
             height: 100%;
-            /* FIX: Use cover to make the image fill the entire box */
-            object-fit: cover; 
+            object-fit: cover; /* Image fills the whole box */
             border-radius: 0.75rem; /* Match the rounded-2xl on the slide container */
         }
 
         /* Enhanced Dollar Graphic Styling */
         .dollar-icon-container {
+            /* Fixed size for aesthetic consistency */
             width: 160px;
             height: 160px;
             margin: 0 auto;
@@ -164,17 +137,13 @@
             
             /* Apply the new aggressive flicker animation */
             animation: neon-flicker 1.5s infinite alternate;
-
-
         }
         
         .dollar-icon-container img {
-            /* Ensure the image/content is visible */
+            /* Ensure the image/content is visible and contained within the circular boundary */
             width: 70%;
             height: 70%;
             object-fit: contain;
-            /* Added filter to give the image content a subtle glow too */
-
             /* UPDATED: Increased shadow spread and intensity */
             filter: drop-shadow(0 0 8px var(--neon-green)) 
                     drop-shadow(0 0 15px rgba(255, 255, 255, 0.7)); 
@@ -228,19 +197,26 @@
             <div class="relative inline-block mb-6">
                 
                 <!-- Enhanced Dollar Graphic Container -->
+                <div class="dollar-icon-container flex items-center justify-center">
                     <!-- Image is placed inside the container for the neon effect -->
-                    <img src="dp_beacons111-removebg-preview.png" height="70%" width="70%"
+                    <img src="dp_beacons111-removebg-preview.png" 
                          alt="Reward Graphic" 
-                         class="w-full h123 object-contain"
+                         class="w-full h-full object-contain"
                          onerror="this.onerror=null;this.src='https://placehold.co/160x160/0c2f10/17e84a?text=$';">
-
-
+                </div>
+                
+                <!-- Overlaid Text (Adjusted positions to accommodate new graphic size) -->
+                <p class="absolute top-0 right-0 text-sm font-bold text-green-300 transform translate-x-1/2 -translate-y-1/2">upto $750</p>
+                <p class="absolute bottom-0 left-0 text-sm font-bold text-green-300 transform -translate-x-1/4 translate-y-1/2">claim rewards</p>
+                
+                <p class="mt-8 text-sm text-gray-400">Just by completing surveys</p>
             </div>
         </header>
 
         <!-- Reward Survey Section -->
 <section class="mb-12 text-center">
-    <h2 class="text-3xl font-extrabold text-white mb-2">
+    <!-- Adjusted heading size for better responsiveness -->
+    <h2 class="text-3xl sm:text-4xl font-extrabold text-white mb-2">
         <span class="text-yellow-500">✨</span> Reward Survey <span class="text-yellow-500">✨</span>
     </h2>
     <p class="text-md text-gray-400 mb-6">
@@ -257,7 +233,8 @@
                 <i class="ph-fill ph-amazon-logo text-3xl text-black"></i>
             </div>
             <div>
-                <p class="font-extrabold text-xl">$750 Amazon 🎁</p>
+                <!-- Responsive text sizing for button content -->
+                <p class="font-extrabold text-xl sm:text-2xl">$750 Amazon 🎁</p>
                 <p class="text-sm opacity-90 font-medium">(Complete survey and deals)</p>
             </div>
             <i class="ph ph-caret-right ml-auto text-2xl font-extrabold"></i>
@@ -270,7 +247,8 @@
         >
             <i class="ph-fill ph-currency-dollar text-4xl mr-4"></i>
             <div>
-                <p class="font-extrabold text-xl">$750 Cash 💵</p>
+                <!-- Responsive text sizing for button content -->
+                <p class="font-extrabold text-xl sm:text-2xl">$750 Cash 💵</p>
                 <p class="text-sm opacity-90 font-medium">(Complete survey and deals)</p>
             </div>
             <i class="ph ph-caret-right ml-auto text-2xl font-extrabold"></i>
@@ -285,12 +263,11 @@
                 Top Claims <span class="text-orange-400">💰</span>
             </h2>
 
-            <!-- Carousel Container: Removed p-4 -mx-4 to fix swiping accuracy -->
+            <!-- Carousel Container -->
             <div id="chat-carousel" class="chat-carousel-container flex">
                 
                 <!-- Chat Slide 1: Image Placeholder -->
                 <div class="chat-slide rounded-2xl overflow-hidden shadow-2xl">
-                    <!-- Note: Using provided custom filenames as a placeholder for local images -->
                     <img src="1232.jpg"
                          alt="Simulated chat conversation 1"
                          onerror="this.onerror=null;this.src='https://placehold.co/400x500/101010/E0E0E0?text=Chat+Screen+1%0ASwipe+Left'">
@@ -298,7 +275,6 @@
 
                 <!-- Chat Slide 2: Image Placeholder -->
                 <div class="chat-slide rounded-2xl overflow-hidden shadow-2xl">
-                    <!-- Note: Using provided custom filenames as a placeholder for local images -->
                     <img src="1233.jpg"
                          alt="Simulated chat conversation 1"
                          onerror="this.onerror=null;this.src='https://placehold.co/400x500/101010/E0E0E0?text=Chat+Screen+1%0ASwipe+Left'">
@@ -329,6 +305,7 @@
         <!-- How to Claim Section -->
         <section class="mb-12">
             <div class="block-card p-8 rounded-2xl max-w-lg mx-auto shadow-2xl">
+                <!-- Responsive text sizing for header -->
                 <h3 class="text-xl sm:text-2xl font-extrabold text-white text-center mb-6">
                     HOW TO CLAIM YOUR GIFT CARD
                 </h3>
@@ -370,56 +347,9 @@
             const carousel = document.getElementById('chat-carousel');
             const slides = carousel.querySelectorAll('.chat-slide');
             const dotsContainer = document.getElementById('carousel-dots');
-            let isDown = false;
-            let startX;
-            let scrollLeft;
-
-            // --- 1. Carousel Touch/Drag Logic ---
-
-            carousel.addEventListener('mousedown', (e) => {
-                isDown = true;
-                carousel.classList.add('active');
-                startX = e.pageX - carousel.offsetLeft;
-                scrollLeft = carousel.scrollLeft;
-            });
-
-            carousel.addEventListener('mouseleave', () => {
-                isDown = false;
-                carousel.classList.remove('active');
-            });
-
-            carousel.addEventListener('mouseup', () => {
-                isDown = false;
-                carousel.classList.remove('active');
-            });
-
-            carousel.addEventListener('mousemove', (e) => {
-                if (!isDown) return;
-                e.preventDefault();
-                const x = e.pageX - carousel.offsetLeft;
-                const walk = (x - startX) * 2; // Scroll factor 2x
-                carousel.scrollLeft = scrollLeft - walk;
-            });
-
-            // Touch events for mobile
-            carousel.addEventListener('touchstart', (e) => {
-                isDown = true;
-                startX = e.touches[0].pageX - carousel.offsetLeft;
-                scrollLeft = carousel.scrollLeft;
-            }, {passive: true});
-
-            carousel.addEventListener('touchend', () => {
-                isDown = false;
-            });
-
-            carousel.addEventListener('touchmove', (e) => {
-                if (!isDown) return;
-                const x = e.touches[0].pageX - carousel.offsetLeft;
-                const walk = (x - startX) * 2;
-                carousel.scrollLeft = scrollLeft - walk;
-            }, {passive: true});
-
-
+            
+            // --- 1. Carousel Interaction Logic (RELYING ON CSS SCROLL SNAP) ---
+            
             // --- 2. Pagination Dots Logic ---
 
             // Create dots
@@ -431,8 +361,7 @@
 
                 dot.addEventListener('click', () => {
                     // Scroll to the corresponding slide
-                    const slideWidth = slides[index].offsetWidth;
-                    // Distance is simply index * slideWidth, as there is no gap
+                    const slideWidth = carousel.clientWidth; // Use container width for scroll distance
                     const scrollDistance = index * slideWidth;
                     
                     carousel.scroll({
@@ -450,9 +379,10 @@
                 
                 if (slides.length === 0) return;
 
-                const slideWidth = slides[0].offsetWidth;
+                // Use carousel.clientWidth as the base width for calculation
+                const slideWidth = carousel.clientWidth;
 
-                // Determine the currently centered slide index (Gap is 0)
+                // Determine the currently centered slide index
                 const currentSlideIndex = Math.round(scrollPosition / slideWidth);
                 let activeIndex = Math.min(slides.length - 1, Math.max(0, currentSlideIndex));
 
