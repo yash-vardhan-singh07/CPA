@@ -119,16 +119,22 @@
 
         /* Carousel/Chat Styling */
 .chat-carousel-container {
-    overflow-x: scroll;
+     overflow-x: scroll;
     scroll-snap-type: x mandatory;
     -webkit-overflow-scrolling: touch;
-    padding-bottom: 1rem;
     scroll-behavior: smooth;
     display: flex;
-    -ms-overflow-style: none;  /* Hide scrollbar for IE and Edge */
+    -ms-overflow-style: none;
     scrollbar-width: none;
+    width: 100vw;
+
+    position: relative;
+    left: 50%;
+    right: 50%;
+    transform: translateX(-50%);
+    padding: 0;
     border: none;     /* Hide scrollbar for Firefox */
-    height: 740px; /* Fixed height for desktop */
+    height: 800px; /* Fixed height for desktop */
     
 }
 .chat-carousel-container::-webkit-scrollbar {
