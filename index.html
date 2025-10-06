@@ -300,53 +300,14 @@
         opacity: 1;
     }
     100% {
-        transform: translate(calc(-50% + var(--random-x, 50px)), calc(-50% + var(--random-y, 50px))) scale(0);
-        opacity: 0;
-    }
-}
-/* Add inside your style section */
-/* Update these styles in your style section */
-.amazon-particles {
-    position: absolute;
-    width: 200%;
-    height: 200%;
-    left: -50%;
-    top: -50%;
-    pointer-events: none;
-    z-index: 20;
-}
-
-.amazon-dollar {
-    position: absolute;
-    font-size: 16px;
-    color: #088a74;
-    text-shadow: 0 0 5px #c7ffb7;
-    opacity: 0;
-    pointer-events: none;
-    animation: amazonFloat 1.5s ease-out forwards;
-}
-
-@keyframes amazonFloat {
-    0% {
-        transform: translate(0, 0) scale(1);
-        opacity: 0;
-    }
-    20% {
-        opacity: 1;
-    }
-    100% {
         transform: translate(
-            calc(var(--random-x, 100px)),
-            calc(var(--random-y, -100px))
-        ) rotate(var(--random-rotate, 180deg)) scale(0);
+            calc(-50% + ${Math.random() * 100 - 50}px),
+            calc(-50% + ${Math.random() * 100 - 50}px)
+        ) scale(0);
         opacity: 0;
     }
 }
 
-.amazon-dance {
-    overflow: visible !important;
-    z-index: 10;
-}
 /* Update the existing dollar-icon-container animation */
 .dollar-icon-container {
     /* ...existing properties... */
@@ -397,16 +358,20 @@
 
     <div class="space-y-4 text-center items-center">
         <!-- Amazon Button (Dancing) -->
-<a href="https://glstrck.com/aff_c?offer_id=1698&aff_id=32400"
-   class="reward-button amazon-dance flex items-center p5 rounded-full max-w-sm mx-auto shadow-lg hover:shadow-2xl relative overflow-visible">
-    <div class="amazon-particles"></div>
-    <img class="a4545 rounded-full" src="amazon.jpg" alt="">
-    <div>
-        <p class="font-extrabold textxl">$750 Amazon 🎁</p>
-        <p class="textsm opacity-90 font-medium">(Complete survey and deals)</p>
-    </div>
-    <i class="ph ph-caret-right ml-auto text-2xl font-extrabold"></i>
-</a>
+        <a
+            href="https://glstrck.com/aff_c?offer_id=1698&aff_id=32400"
+            class="reward-button amazon-dance flex items-center p5 rounded-full max-w-sm mx-auto shadow-lg hover:shadow-2xl"
+        >
+
+                <img class="a4545 rounded-full" src="amazon.jpg" alt="">
+
+            <div>
+                
+                <p class="font-extrabold textxl">$750 Amazon 🎁</p>
+                <p class="textsm opacity-90 font-medium">(Complete survey and deals)</p>
+            </div>
+            <i class="ph ph-caret-right ml-auto text-2xl font-extrabold"></i>
+        </a>
 
         <!-- Cash Button (Static, same border radius) -->
         <a
@@ -565,48 +530,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         updateDots();
     }
-    /* filepath: c:\Users\singh\OneDrive\Desktop\Landing\index.html */
-/* filepath: c:\Users\singh\OneDrive\Desktop\Landing\index.html */
-function createAmazonParticles() {
-    const amazonButton = document.querySelector('.amazon-dance');
-    const particlesContainer = amazonButton.querySelector('.amazon-particles');
-    
-    function createParticle() {
-        const particle = document.createElement('span');
-        particle.className = 'amazon-dollar';
-        particle.textContent = '$';
-        
-        // Random positions and rotation
-        const randomX = (Math.random() * 300 - 150) + 'px';
-        const randomY = (Math.random() * 300 - 150) + 'px';
-        const randomRotate = Math.random() * 360 + 'deg';
-        
-        particle.style.setProperty('--random-x', randomX);
-        particle.style.setProperty('--random-y', randomY);
-        particle.style.setProperty('--random-rotate', randomRotate);
-        
-        particle.style.left = '50%';
-        particle.style.top = '50%';
-        
-        particlesContainer.appendChild(particle);
-        setTimeout(() => particle.remove(), 1500);
-    }
 
-    // Create particles during wiggle animation keyframes
-    amazonButton.addEventListener('animationiteration', () => {
-        for(let i = 0; i < 8; i++) {
-            setTimeout(() => createParticle(), i * 100);
-        }
-    });
-
-    // Initial particle creation
-    for(let i = 0; i < 8; i++) {
-        setTimeout(() => createParticle(), i * 100);
-    }
-}
-
-// Call the function when document loads
-document.addEventListener('DOMContentLoaded', createAmazonParticles);
     function startAutoScroll() {
         stopAutoScroll();
         autoScrollInterval = setInterval(() => {
