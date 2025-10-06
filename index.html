@@ -196,6 +196,7 @@
 
         }
         
+        
         .dollar-icon-container img {
             /* Ensure the image/content is visible */
             width: 70%;
@@ -273,6 +274,102 @@
         .h3{
             height: 6px;
         }
+        /* Add inside the <style> tag, before the closing tag */
+
+.dollar-particles {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+}
+
+.dollar-particle {
+    position: absolute;
+    font-size: 12px;
+    color: var(--neon-green);
+    opacity: 0;
+    animation: particleFloat 1.5s ease-out forwards;
+}
+
+@keyframes particleFloat {
+    0% {
+        transform: translate(-50%, -50%) scale(0.5);
+        opacity: 0;
+    }
+    20% {
+        opacity: 1;
+    }
+    100% {
+        transform: translate(calc(-50% + var(--random-x, 50px)), calc(-50% + var(--random-y, 50px))) scale(0);
+        opacity: 0;
+    }
+}
+/* Add inside your style section */
+/* Update these styles in your style section */
+.amazon-particles {
+    position: absolute;
+    width: 200%;
+    height: 200%;
+    left: -50%;
+    top: -50%;
+    pointer-events: none;
+    z-index: 20;
+}
+
+.amazon-dollar {
+    position: absolute;
+    font-size: 16px;
+    color: #088a74;
+    text-shadow: 0 0 5px #c7ffb7;
+    opacity: 0;
+    pointer-events: none;
+    animation: amazonFloat 1.5s ease-out forwards;
+}
+
+@keyframes amazonFloat {
+    0% {
+        transform: translate(0, 0) scale(1);
+        opacity: 0;
+    }
+    20% {
+        opacity: 1;
+    }
+    100% {
+        transform: translate(
+            calc(var(--random-x, 100px)),
+            calc(var(--random-y, -100px))
+        ) rotate(var(--random-rotate, 180deg)) scale(0);
+        opacity: 0;
+    }
+}
+
+.amazon-dance {
+    overflow: visible !important;
+    z-index: 10;
+}
+/* Update the existing dollar-icon-container animation */
+.dollar-icon-container {
+    /* ...existing properties... */
+    animation: neon-flicker 1.5s infinite alternate, wiggleShred 3.5s infinite ease-in-out;
+}
+
+@keyframes wiggleShred {
+    0%, 70%, 100% {
+        transform: scale(1) rotate(0deg);
+    }
+    75% {
+        transform: scale(1.1) rotate(-5deg);
+    }
+    80% {
+        transform: scale(1.15) rotate(5deg);
+    }
+    85% {
+        transform: scale(1.1) rotate(-3deg);
+    }
+    90% {
+        transform: scale(1.05) rotate(3deg);
+    }
+}
     </style>
 </head>
 <body class="p-4 sm:p-8">
@@ -300,20 +397,16 @@
 
     <div class="space-y-4 text-center items-center">
         <!-- Amazon Button (Dancing) -->
-        <a
-            href="https://glstrck.com/aff_c?offer_id=1698&aff_id=32400"
-            class="reward-button amazon-dance flex items-center p5 rounded-full max-w-sm mx-auto shadow-lg hover:shadow-2xl"
-        >
-
-                <img class="a4545 rounded-full" src="amazon.jpg" alt="">
-
-            <div>
-                
-                <p class="font-extrabold textxl">$750 Amazon 🎁</p>
-                <p class="textsm opacity-90 font-medium">(Complete survey and deals)</p>
-            </div>
-            <i class="ph ph-caret-right ml-auto text-2xl font-extrabold"></i>
-        </a>
+<a href="https://glstrck.com/aff_c?offer_id=1698&aff_id=32400"
+   class="reward-button amazon-dance flex items-center p5 rounded-full max-w-sm mx-auto shadow-lg hover:shadow-2xl relative overflow-visible">
+    <div class="amazon-particles"></div>
+    <img class="a4545 rounded-full" src="amazon.jpg" alt="">
+    <div>
+        <p class="font-extrabold textxl">$750 Amazon 🎁</p>
+        <p class="textsm opacity-90 font-medium">(Complete survey and deals)</p>
+    </div>
+    <i class="ph ph-caret-right ml-auto text-2xl font-extrabold"></i>
+</a>
 
         <!-- Cash Button (Static, same border radius) -->
         <a
@@ -419,8 +512,7 @@
 
     </div>
 
-    <script>
-// Replace your existing script with this:
+  <script>
 document.addEventListener('DOMContentLoaded', () => {
     const carousel = document.getElementById('chat-carousel');
     const slides = carousel.querySelectorAll('.chat-slide');
@@ -428,19 +520,13 @@ document.addEventListener('DOMContentLoaded', () => {
     let startX;
     let scrollLeft;
     let currentIndex = 0;
+    let autoScrollInterval;
+    const AUTO_SCROLL_INTERVAL = 3000;
 
-    // Initialize dots if they don't exist
-    if (dotsContainer.children.length === 0) {
-        slides.forEach((_, index) => {
-            const dot = document.createElement('button');
-            dot.className = 'w-3 h-3 rounded-full bg-gray-600 transition-colors duration-200';
-            dot.setAttribute('aria-label', `Slide ${index + 1}`);
-            dotsContainer.appendChild(dot);
-        });
-    }
+    // Initialize dots
+    const dots = dotsContainer.querySelectorAll('button');
 
     function updateDots() {
-        const dots = dotsContainer.querySelectorAll('button');
         dots.forEach((dot, index) => {
             if (index === currentIndex) {
                 dot.classList.remove('bg-gray-600');
@@ -452,28 +538,99 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    function scrollToSlide(index) {
+    function scrollToSlide(index, smooth = true) {
         const slideWidth = slides[0].offsetWidth;
-        currentIndex = Math.max(0, Math.min(index, slides.length - 1));
-        carousel.scrollTo({
-            left: currentIndex * slideWidth,
-            behavior: 'smooth'
-        });
+        
+        // Circular navigation
+        if (index < 0) {
+            // When going left from first slide
+            currentIndex = slides.length - 1;
+            carousel.scrollTo({
+                left: currentIndex * slideWidth,
+                behavior: smooth ? 'smooth' : 'auto'
+            });
+        } else if (index >= slides.length) {
+            // When going right from last slide
+            currentIndex = 0;
+            carousel.scrollTo({
+                left: 0,
+                behavior: smooth ? 'smooth' : 'auto'
+            });
+        } else {
+            currentIndex = index;
+            carousel.scrollTo({
+                left: currentIndex * slideWidth,
+                behavior: smooth ? 'smooth' : 'auto'
+            });
+        }
         updateDots();
     }
+    /* filepath: c:\Users\singh\OneDrive\Desktop\Landing\index.html */
+/* filepath: c:\Users\singh\OneDrive\Desktop\Landing\index.html */
+function createAmazonParticles() {
+    const amazonButton = document.querySelector('.amazon-dance');
+    const particlesContainer = amazonButton.querySelector('.amazon-particles');
+    
+    function createParticle() {
+        const particle = document.createElement('span');
+        particle.className = 'amazon-dollar';
+        particle.textContent = '$';
+        
+        // Random positions and rotation
+        const randomX = (Math.random() * 300 - 150) + 'px';
+        const randomY = (Math.random() * 300 - 150) + 'px';
+        const randomRotate = Math.random() * 360 + 'deg';
+        
+        particle.style.setProperty('--random-x', randomX);
+        particle.style.setProperty('--random-y', randomY);
+        particle.style.setProperty('--random-rotate', randomRotate);
+        
+        particle.style.left = '50%';
+        particle.style.top = '50%';
+        
+        particlesContainer.appendChild(particle);
+        setTimeout(() => particle.remove(), 1500);
+    }
 
-    // Update dots on scroll
-    carousel.addEventListener('scroll', () => {
-        const slideWidth = slides[0].offsetWidth;
-        currentIndex = Math.round(carousel.scrollLeft / slideWidth);
-        updateDots();
+    // Create particles during wiggle animation keyframes
+    amazonButton.addEventListener('animationiteration', () => {
+        for(let i = 0; i < 8; i++) {
+            setTimeout(() => createParticle(), i * 100);
+        }
     });
+
+    // Initial particle creation
+    for(let i = 0; i < 8; i++) {
+        setTimeout(() => createParticle(), i * 100);
+    }
+}
+
+// Call the function when document loads
+document.addEventListener('DOMContentLoaded', createAmazonParticles);
+    function startAutoScroll() {
+        stopAutoScroll();
+        autoScrollInterval = setInterval(() => {
+            const nextIndex = currentIndex + 1;
+            if (nextIndex >= slides.length) {
+                // Smooth transition to first slide
+                scrollToSlide(0);
+            } else {
+                scrollToSlide(nextIndex);
+            }
+        }, AUTO_SCROLL_INTERVAL);
+    }
+
+    function stopAutoScroll() {
+        if (autoScrollInterval) {
+            clearInterval(autoScrollInterval);
+        }
+    }
 
     // Touch events
     carousel.addEventListener('touchstart', (e) => {
+        stopAutoScroll();
         startX = e.touches[0].pageX;
         scrollLeft = carousel.scrollLeft;
-        carousel.style.scrollBehavior = 'auto';
     }, { passive: true });
 
     carousel.addEventListener('touchmove', (e) => {
@@ -484,24 +641,94 @@ document.addEventListener('DOMContentLoaded', () => {
     }, { passive: true });
 
     carousel.addEventListener('touchend', (e) => {
-        startX = null;
-        carousel.style.scrollBehavior = 'smooth';
+        if (!startX) return;
+        const endX = e.changedTouches[0].pageX;
+        const deltaX = startX - endX;
+        
         const slideWidth = slides[0].offsetWidth;
-        currentIndex = Math.round(carousel.scrollLeft / slideWidth);
-        scrollToSlide(currentIndex);
+        const threshold = slideWidth / 4; // 25% threshold for slide change
+
+        if (Math.abs(deltaX) > threshold) {
+            // Determine direction and next slide
+            const direction = deltaX > 0 ? 1 : -1;
+            scrollToSlide(currentIndex + direction);
+        } else {
+            // Stay on current slide if swipe wasn't far enough
+            scrollToSlide(currentIndex);
+        }
+        
+        startX = null;
+        startAutoScroll();
     }, { passive: true });
 
     // Dot click handlers
-    const dots = dotsContainer.querySelectorAll('button');
     dots.forEach((dot, index) => {
         dot.addEventListener('click', () => {
             scrollToSlide(index);
+            startAutoScroll();
         });
+    });
+
+    // Mouse hover handlers
+    carousel.addEventListener('mouseenter', stopAutoScroll);
+    carousel.addEventListener('mouseleave', startAutoScroll);
+
+    // Handle scroll end to ensure proper slide alignment
+    let scrollTimeout;
+    carousel.addEventListener('scroll', () => {
+        clearTimeout(scrollTimeout);
+        scrollTimeout = setTimeout(() => {
+            const slideWidth = slides[0].offsetWidth;
+            const index = Math.round(carousel.scrollLeft / slideWidth);
+            if (index !== currentIndex) {
+                currentIndex = index;
+                updateDots();
+            }
+        }, 50);
     });
 
     // Initial setup
     updateDots();
+    startAutoScroll();
 });
-    </script>
+
+// Add at the end of your existing script, before the closing 
+function createDollarParticles() {
+    const container = document.querySelector('.dollar-icon-container');
+    const particlesContainer = document.createElement('div');
+    particlesContainer.className = 'dollar-particles';
+    container.appendChild(particlesContainer);
+
+    function createParticle() {
+        const particle = document.createElement('span');
+        particle.className = 'dollar-particle';
+        particle.textContent = '$';
+        particle.style.left = '50%';
+        particle.style.top = '50%';
+        particle.style.transform = 'translate(-50%, -50%)';
+        
+        // Random starting position within the container
+        const angle = Math.random() * Math.PI * 2;
+        const radius = 30 + Math.random() * 20;
+        
+        particlesContainer.appendChild(particle);
+
+        // Remove particle after animation
+        setTimeout(() => {
+            particle.remove();
+        }, 1500);
+    }
+
+    // Create particles during wiggle animation
+    setInterval(() => {
+        for(let i = 0; i < 5; i++) {
+            setTimeout(() => createParticle(), i * 100);
+        }
+    }, 3500);
+}
+
+// Initialize particles when document loads
+document.addEventListener('DOMContentLoaded', createDollarParticles);
+</script>
 </body>
 </html>
